@@ -5,14 +5,18 @@ import './App.css'
 import Signature from './components/Signature'
 import DraggableSignaturePad from './components/DraggableSignaturePad'
 import ResizableComp from './components/ResizableComp'
+import MyComponent from './components/MySigV2'
+import MySigV3 from './components/MySigV3'
 
 function App() {
   
 
   return (
     <>
-    <Signature />
-    <DraggableSignaturePad />
+    {/* <Signature />
+    <DraggableSignaturePad /> */}
+    {/* <MyComponent /> */}
+    <MySigV3 />
     </>
   )
 }
