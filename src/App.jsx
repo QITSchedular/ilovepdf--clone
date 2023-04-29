@@ -13,6 +13,7 @@ import ResizableDraggableDiv from './components/ResizableDiv/ResizableDraggableD
 import MySignature from './components/ResizableDiv/MySignature'
 import RenderPdf from './components/RenderPdf/RenderPdf'
 import DragDropCopy from './components/DragDropCopy/DragDropCopy'
+import SignatureCanvasModal from './components/SignatureCanvasModal/SignatureCanvasModal'
 
 
 
@@ -34,6 +35,7 @@ function App() {
     {/* <DisplayPdf /> */}
     <RenderPdf />
     {/* <DragDropCopy /> */}
+    <SignatureCanvasModal />
     </>
   )
 }

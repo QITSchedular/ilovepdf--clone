@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import * as PDFJS from "pdfjs-dist/build/pdf";
 import SignatureDragger from "../ResizableDiv/SignatureDragger";
-
+import ExportPdf from "../ExportPage/ExportPdf";
 
 PDFJS.GlobalWorkerOptions.workerSrc =
   window.location.origin + "/pdf.worker.min.js";
@@ -13,8 +13,6 @@ export default function PdfViewer() {
   const [images, setImages] = useState([]);
   const [height, setHeight] = useState(0);
   const [dragger, setDragger] = useState(false);
-  const [signPdf, setSignPdf] = useState(false);
-  const [showSelect, setShowSelect] = useState(true);
 
   async function showPdf(event) {
     try {
@@ -22,8 +20,7 @@ export default function PdfViewer() {
       const uri = URL.createObjectURL(file);
       var _PDF_DOC = await PDFJS.getDocument(uri).promise;
       setPdf(_PDF_DOC);
-      //   console.log("pdf",_PDF_DOC);
-        document.getElementById("file-to-upload").value = "";
+      document.getElementById("file-to-upload").value = "";
     } catch (error) {
       alert(error.message);
       console.log("error", error);
@@ -45,18 +42,15 @@ export default function PdfViewer() {
         canvasContext: canvas.getContext("2d"),
         viewport: viewport,
       };
-      console.log("page lenght", pdf.numPages);
+      console.log("Number of pages: ", pdf.numPages);
       setWidth(viewport.width);
       setHeight(viewport.height);
       await page.render(render_context).promise;
       let img = canvas.toDataURL("image/png");
       imagesList.push(img);
-      console.log("images", images);
     }
     setImages(imagesList);
     setDragger(true);
-    setShowSelect(false);
-    signPdf(true);
   }
 
   useEffect(() => {
@@ -74,8 +68,6 @@ export default function PdfViewer() {
       gap: "5px",
     },
     imageWrapper: {
-      // width: "300px",
-      // height: "350px",
       border: "1px solid rgba(0,0,0,0.15)",
       borderRadius: "3px",
       boxShadow: "0 2px 5px 0 rgba(0,0,0,0.25)",
@@ -84,16 +76,14 @@ export default function PdfViewer() {
   };
 
   return (
-    <div className="App" style={{backgroundColor:"#EEEEEE"}}>
+    <div className="App" style={{ backgroundColor: "#EEEEEE" }}>
       <button
         id="upload-button"
         onClick={() => document.getElementById("file-to-upload").click()}
       >
         Select PDF
       </button>
-      
-      {/* show the select button initially */}
-      {showSelect &&
+
       <input
         type="file"
         id="file-to-upload"
@@ -101,21 +91,14 @@ export default function PdfViewer() {
         hidden
         onChange={showPdf}
       />
-      }
 
       <div id="pdf-main-container">
-        {/* <div id="pdf-loader" hidden={!pdfRendering}>
-          Loading document ...
-        </div> */}
         <div id="pdf-contents">
           <div id="image-convas-row">
-            {/* <canvas id="pdf-canvas" width={width} height={height}></canvas> */}
-            
             <div style={styles.wrapper} id="mysignature__dragger">
-                {/* {dragger && <SignatureDragger />} */}
               {images.map((image, idx) => (
                 <div key={idx} style={styles.imageWrapper}>
-                    {idx === 0 ? <SignatureDragger /> : null}
+                  {idx === 0 ? <SignatureDragger /> : null}
                   <img
                     src={image}
                     alt={`page-${idx}`}
@@ -128,6 +111,7 @@ export default function PdfViewer() {
           </div>
         </div>
       </div>
+      {/* <ExportPdf id={"all__pdfpages"} customefilename={"somerandom"}/> */}
     </div>
   );
 }

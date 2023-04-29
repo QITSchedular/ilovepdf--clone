@@ -16,7 +16,7 @@ const SignatureDragger = () => {
   useEffect(() => {
     const parent = document.getElementById("mysignature__dragger");
     const { width, height } = parent.getBoundingClientRect();
-    const offset = Math.min(width, height) * 0.02; // calculate 2% of the smallest dimension
+    const offset = Math.min(width, height) * 0.02;
     setParentDimensions({ width, height });
     setDraggableAreaOffset(offset);
   }, []);
