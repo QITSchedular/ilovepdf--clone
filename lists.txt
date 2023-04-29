@@ -38,3 +38,33 @@ There is no "Signature" button that displays the signature pad when clicked. You
 The code allows the user to drag and drop the signature annotation to any position on the PDF page, but it does not save the new position in the PDF data as required. You may need to add code to save the new position to the PDF data when the user releases the mouse button.
 The code allows the user to resize the signature annotation by dragging the corners of the bounding box, but it does not update the size and position of the annotation in the PDF data as required. You may need to add code to update the size and position of the annotation in the PDF data when the user resizes the annotation.
 The transparency of the signature annotation is hard-coded to 0.5. You may need to allow the user to set the transparency of the annotation as required.
+
+
+// ALL STEPS DESTRUCTURED = MY_APP_REQUIREMENTS
+    => The user selects a PDF file using the file input element.
+ 
+    => The PDF file is loaded into the application using the PDF-lib library. The pdf will be displayed as soon as the user selects one.
+ 
+    => A canvas element is displayed on the page where the user can draw their signature using the react-signature-canvas library.
+ 
+    => Once the user is happy with their signature, they click the "OK" button, which saves the signature as a PNG image and sets the state of the application to include the signature image. 
+    That Signature Image will be shown over a resizable div over the displayed pdf. 
+ 
+    => The user can then drag and drop the signature image onto the PDF document preview to position it where they want it to appear on the document.
+ 
+    => When the user is happy with the signature placement, they click the "Sign PDF" button.
+ 
+    => The signature image is embedded into the PDF document using the PDF-lib library, and a new PDF document with the embedded signature is created.
+ 
+    => The new PDF document is saved as a blob and set as the state of the application.
+ 
+    => The user can download the signed PDF document by clicking the "Download PDF" button.
+ 
+    => Overall, the code is a React component that uses various libraries and HTML elements to allow the user to sign a PDF document using a 
+    canvas-based signature pad and embed the signature into the document.
+
+
+
+
+// Create a draggable hook
+https://www.youtube.com/watch?v=zUHc0SplCAI
