@@ -96,7 +96,7 @@ export default function PdfViewer() {
         <div id="pdf-contents">
           <div id="image-convas-row">
             <div style={styles.wrapper} id="mysignature__dragger">
-              {images.map((image, idx) => (
+              {/* {images.map((image, idx) => (
                 <div key={idx} style={styles.imageWrapper}>
                   {idx === 0 ? <SignatureDragger /> : null}
                   <img
@@ -106,12 +106,26 @@ export default function PdfViewer() {
                     height={height}
                   />
                 </div>
-              ))}
+              ))} */}
+              
+              {/* <SignatureDragger /> */}
+              {images.length >0 &&
+              <div>
+              <img
+                    src={images[2]}
+                    alt={`page-`}
+                    width={width}
+                    height={height}
+                    id="testOne"
+                  />
+                   </div>
+              }
+             
             </div>
           </div>
         </div>
       </div>
-      {/* <ExportPdf id={"all__pdfpages"} customefilename={"somerandom"}/> */}
+      <ExportPdf id={"testOne"} customFileName={"somerandom"} width={width} height= {height}/>
     </div>
   );
 }

@@ -68,3 +68,26 @@ The transparency of the signature annotation is hard-coded to 0.5. You may need 
 
 // Create a draggable hook
 https://www.youtube.com/watch?v=zUHc0SplCAI
+================================================================================================================================================================================================
+TUTS:
+    1. React drag and drop with clone:
+        sandbox: https://codesandbox.io/s/react-beautiful-dnd-copy-and-drag-forked-bz1bq4?file=/index.js
+    
+    2. React drag and resizable with jquery:
+        sandbox: http://jsfiddle.net/akashdmukherjee/sa44ks9u/4/
+
+    3. React drag and resizable with pure javascript:
+        sandbox: https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
+================================================================================================================================================================================================
+DESTRUCTURE:
+ async function savePDF() {
+    if (!pdfFile || saving || !pages.length) return;
+    saving = true;
+    try {
+      await save(pdfFile, allObjects, pdfName, pagesScale);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      saving = false;
+    }
+  }

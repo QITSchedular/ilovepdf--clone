@@ -18,7 +18,7 @@ const SignatureCanvasModal = () => {
 
   const save = () => {
     setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
-    console.log(sigCanvas.current.toDataURL("image/png"))
+    console.log(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
   };
 
   return (
@@ -58,6 +58,7 @@ const SignatureCanvasModal = () => {
             <div className="modal-body p-2">
               <SignaturePad
                 ref={sigCanvas}
+                penColor="red"
                 canvasProps={{ className: "signatureCanvas", width:482, height:170}}
               />
             </div>
