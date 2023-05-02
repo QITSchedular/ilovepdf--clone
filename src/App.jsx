@@ -35,7 +35,7 @@ function App() {
     {/* <DisplayPdf /> */}
     <RenderPdf />
     {/* <DragDropCopy /> */}
-    <SignatureCanvasModal />
+    {/* <SignatureCanvasModal /> */}
     </>
   )
 }

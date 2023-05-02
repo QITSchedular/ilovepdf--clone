@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./styles.css";
+// import "./styles.css";
 import * as PDFJS from "pdfjs-dist/build/pdf";
 import SignatureDragger from "../ResizableDiv/SignatureDragger";
 import ExportPdf from "../ExportPage/ExportPdf";
-
+import "bootstrap/dist/css/bootstrap.min.css"
 PDFJS.GlobalWorkerOptions.workerSrc =
   window.location.origin + "/pdf.worker.min.js";
 
@@ -77,9 +77,11 @@ export default function PdfViewer() {
   };
 
   return (
-    <div className="App" style={{ backgroundColor: "#EEEEEE" }}>
+    <div className="container d-flex flex-column justify-content-center p-2" style={{ backgroundColor: "#EEEEEE" }}>
+      <div className="input_controls">
+
       <button
-        id="upload-button"
+        className="btn btn-primary"
         onClick={() => document.getElementById("file-to-upload").click()}
       >
         Select PDF
@@ -92,6 +94,7 @@ export default function PdfViewer() {
         hidden
         onChange={showPdf}
       />
+      </div>
 
       <div id="pdf-main-container">
         <div id="pdf-contents">
@@ -112,7 +115,6 @@ export default function PdfViewer() {
               {/* <SignatureDragger /> */}
               {images.length >0 &&
               <div>
-                <SignatureDragger bounds={".testOne"}/>
               <img
                     src={images[2]}
                     alt={`page-`}
@@ -121,6 +123,7 @@ export default function PdfViewer() {
                     id="testOne"
                     className="testOne"
                   />
+                <SignatureDragger bounds={".testOne"}/>
                    </div>
               }
              
@@ -128,7 +131,7 @@ export default function PdfViewer() {
           </div>
         </div>
       </div>
-      <ExportPdf id={"testOne"} customFileName={"somerandom"} width={width} height= {height}/>
+      {/* <ExportPdf id={"testOne"} customFileName={"somerandom"} width={width} height= {height}/> */}
     </div>
   );
 }

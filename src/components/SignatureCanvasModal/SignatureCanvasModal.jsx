@@ -29,7 +29,7 @@ const SignatureCanvasModal = () => {
         data-toggle="modal"
         data-target="#exampleModalCenter"
       >
-        Launch demo modal
+        Draw a signature
       </button>
 
       <div
@@ -44,7 +44,7 @@ const SignatureCanvasModal = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLongTitle">
-                Modal title
+                Draw Your signature on the canvas..
               </h5>
               <button
                 type="button"

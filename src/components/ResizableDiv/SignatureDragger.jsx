@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
-
+import reactLogo from "../../assets/react.svg";
 const style = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "solid 1px #ddd",
-  background: "#f0f0f0",
+  border: "none",
+  background: "transparent",
+};
+const imageStyle = {
+  boxShadow: "none",
+  userSelect: "none",
+  maxWidth:"100%",
+  maxHeight:"100%",
+  width:"auto",
+  height:"auto",
 };
 
-const SignatureDragger = () => {
+const SignatureDragger = ({ bounds }) => {
   const [parentDimensions, setParentDimensions] = useState({
     width: 500,
     height: 500,
@@ -17,25 +25,22 @@ const SignatureDragger = () => {
   const [draggableAreaOffset, setDraggableAreaOffset] = useState(10);
   const [signaturePosition, setSignaturePosition] = useState({ x: 0, y: 0 });
   const [signatureSize, setSignatureSize] = useState({ width: 50, height: 50 });
+  
   const handleSignatureChange = (newPosition, newWidth, newHeight) => {
     setSignaturePosition(newPosition);
     setSignatureSize({ width: newWidth, height: newHeight });
     console.log("Signature position:", newPosition);
     console.log("Signature size:", { width: newWidth, height: newHeight });
   };
+  
   useEffect(() => {
-    const parent = document.getElementById("mysignature__dragger");
+    const parent = document.querySelector(bounds);
     const { width, height } = parent.getBoundingClientRect();
     const offset = Math.min(width, height) * 0.02;
     setParentDimensions({ width, height });
     setDraggableAreaOffset(offset);
   }, []);
-    const bounds = {
-    top: draggableAreaOffset,
-    right: parentDimensions.width - signatureSize.width - draggableAreaOffset,
-    bottom: parentDimensions.height - signatureSize.height - draggableAreaOffset,
-    left: draggableAreaOffset
-  };
+
   return (
     <Rnd
       style={style}
@@ -45,7 +50,7 @@ const SignatureDragger = () => {
         width: 50,
         height: 50,
       }}
-      bounds="parent"
+      bounds={bounds}
       enableResizing={true}
       dragGrid={[draggableAreaOffset, draggableAreaOffset]}
       onDragStop={(e, d) =>
@@ -63,7 +68,8 @@ const SignatureDragger = () => {
       maxWidth={200}
       maxHeight={150}
     >
-      Rnd
+      <img src={reactLogo} alt="signature" style={imageStyle} draggable="false"/>
+      {/* <h3>Drag me</h3> */}
     </Rnd>
   );
 };
