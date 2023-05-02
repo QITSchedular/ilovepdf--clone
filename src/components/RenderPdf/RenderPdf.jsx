@@ -42,11 +42,12 @@ export default function PdfViewer() {
         canvasContext: canvas.getContext("2d"),
         viewport: viewport,
       };
-      console.log("Number of pages: ", pdf.numPages);
+      // console.log("Number of pages: ", pdf.numPages);
       setWidth(viewport.width);
       setHeight(viewport.height);
       await page.render(render_context).promise;
-      let img = canvas.toDataURL("image/png");
+      let img = canvas.toDataURL("image/jpg");
+      
       imagesList.push(img);
     }
     setImages(imagesList);
@@ -111,12 +112,14 @@ export default function PdfViewer() {
               {/* <SignatureDragger /> */}
               {images.length >0 &&
               <div>
+                <SignatureDragger bounds={".testOne"}/>
               <img
                     src={images[2]}
                     alt={`page-`}
                     width={width}
                     height={height}
                     id="testOne"
+                    className="testOne"
                   />
                    </div>
               }
