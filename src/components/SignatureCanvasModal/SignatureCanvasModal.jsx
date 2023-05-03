@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import SignaturePad from "react-signature-canvas";
+import "bootstrap/dist/js/bootstrap.bundle.min.js"
 import "./SignatureCanvasModal.css";
 
-const SignatureCanvasModal = () => {
+const SignatureCanvasModal = ({ onApplySignature }) => {
   const [imageURL, setImageURL] = useState(null);
   const sigCanvas = useRef({});
 
@@ -17,15 +18,17 @@ const SignatureCanvasModal = () => {
   };
 
   const save = () => {
-    setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
-    console.log(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+    const imageData = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+    setImageURL(imageData);
+    onApplySignature(imageData);
+    //console.log(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
   };
 
   return (
     <>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-danger"
         data-toggle="modal"
         data-target="#exampleModalCenter"
       >
@@ -66,12 +69,12 @@ const SignatureCanvasModal = () => {
               <button
                 type="button"
                 className="btn btn-secondary"
-                data-dismiss="modal"
+                
                 onClick={clear}
               >
-                Close
+                Clear
               </button>
-              <button type="button" className="btn btn-primary" onClick={save}>
+              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={save}>
                 Apply
               </button>
             </div>

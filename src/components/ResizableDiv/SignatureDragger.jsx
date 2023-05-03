@@ -5,7 +5,7 @@ const style = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "none",
+  border: "1px dashed red",
   background: "transparent",
 };
 const imageStyle = {
@@ -17,7 +17,7 @@ const imageStyle = {
   height:"auto",
 };
 
-const SignatureDragger = ({ bounds }) => {
+const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
   const [parentDimensions, setParentDimensions] = useState({
     width: 500,
     height: 500,
@@ -26,11 +26,19 @@ const SignatureDragger = ({ bounds }) => {
   const [signaturePosition, setSignaturePosition] = useState({ x: 0, y: 0 });
   const [signatureSize, setSignatureSize] = useState({ width: 50, height: 50 });
   
-  const handleSignatureChange = (newPosition, newWidth, newHeight) => {
+  const handleSignatureChange = async (newPosition, newWidth, newHeight) => {
     setSignaturePosition(newPosition);
     setSignatureSize({ width: newWidth, height: newHeight });
     console.log("Signature position:", newPosition);
     console.log("Signature size:", { width: newWidth, height: newHeight });
+
+    // A callback function which is passing the data(signature position and the width) back to the parent RenderPdf
+    const newObj = {
+      position : newPosition,
+      width : newWidth,
+      height : newHeight
+    }
+    onChangeDimensions(newObj);
   };
   
   useEffect(() => {
@@ -68,7 +76,7 @@ const SignatureDragger = ({ bounds }) => {
       maxWidth={200}
       maxHeight={150}
     >
-      <img src={reactLogo} alt="signature" style={imageStyle} draggable="false"/>
+      <img src={signatureData} alt="signature" style={imageStyle} draggable="false"/>
       {/* <h3>Drag me</h3> */}
     </Rnd>
   );

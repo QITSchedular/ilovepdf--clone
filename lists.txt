@@ -86,8 +86,18 @@ DESTRUCTURE:
     try {
       await save(pdfFile, allObjects, pdfName, pagesScale);
     } catch (e) {
-      console.log(e);
+      console.log(e); 
     } finally {
       saving = false;
     }
   }
+================================================================================================================================================================================================
+ADJUST THE COORDINATE SYSTEM OF THE PDF-LIB TO COORESPOND TO GUI COORDINATE SYSTEM:
+
+To adjust the coordinate system of pdf-lib to correspond to GUI interface, 
+you need to subtract the y value of the newSigDimensions parameter from the height of the page. 
+This will flip the y coordinate from the top-left corner of the GUI to the bottom-left corner of the PDF page.
+So, in the embedImageIntoPdf function, change the y value in the drawImage function to:
+
+y: height - newSigDimensions.position.y - newSigDimensions.height,
+This will adjust the y coordinate in the PDF document to match the y coordinate in the GUI interface.
