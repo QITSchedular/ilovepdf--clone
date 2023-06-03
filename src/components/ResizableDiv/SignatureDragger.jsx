@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import reactLogo from "../../assets/react.svg";
 const style = {
+  boxSizing: "border-box",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "1px dashed red",
+  border: "1px dashed blue",
   background: "transparent",
+  padding: "2px",
+};
+const imageConatinerStyle = {
+  width: "100%",
+  height: "100%",
+  border: "1px solid red",
+  padding: "2px",
 };
 const imageStyle = {
-  boxShadow: "none",
-  userSelect: "none",
-  maxWidth:"100%",
-  maxHeight:"100%",
-  width:"auto",
-  height:"auto",
+  width: "100%",
+  height: "100%",
 };
 
 const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
@@ -25,18 +29,23 @@ const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
   const [draggableAreaOffset, setDraggableAreaOffset] = useState(10);
   const [signaturePosition, setSignaturePosition] = useState({ x: 0, y: 0 });
   const [signatureSize, setSignatureSize] = useState({ width: 50, height: 50 });
-  
-  const handleSignatureChange = async (newPosition, newWidth, newHeight) => {
+  const imgRef = useRef(null);
+  const handleSignatureChange = async (newPosition, newWidth, newHeight, newImgWidth,
+    newImgHeight) => {
     setSignaturePosition(newPosition);
     setSignatureSize({ width: newWidth, height: newHeight });
     console.log("Signature position:", newPosition);
     console.log("Signature size:", { width: newWidth, height: newHeight });
+    console.log("Only Signature size:", { width: newImgWidth, height: newImgHeight });
+    const signatureFontSize = parseInt(window.getComputedStyle(imgRef.current).fontSize);
+    console.log("Signature font size:", signatureFontSize);
+    // ...
 
     // A callback function which is passing the data(signature position and the width) back to the parent RenderPdf
     const newObj = {
       position : newPosition,
-      width : newWidth,
-      height : newHeight
+      width : newImgWidth,
+      height : newImgHeight
     }
     onChangeDimensions(newObj);
   };
@@ -44,6 +53,7 @@ const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
   useEffect(() => {
     const parent = document.querySelector(bounds);
     const { width, height } = parent.getBoundingClientRect();
+    console.log("getBoundingClientRect", width, height);
     const offset = Math.min(width, height) * 0.02;
     setParentDimensions({ width, height });
     setDraggableAreaOffset(offset);
@@ -55,7 +65,7 @@ const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
       default={{
         x: 0,
         y: 0,
-        width: 50,
+        width: 80,
         height: 50,
       }}
       bounds={bounds}
@@ -65,19 +75,20 @@ const SignatureDragger = ({ bounds, signatureData,onChangeDimensions }) => {
         handleSignatureChange(
           { x: d.x, y: d.y },
           signatureSize.width,
-          signatureSize.height
+          signatureSize.height,
+          imgRef.current.width,
+          imgRef.current.height
         )
       }
       onResizeStop={(e, direction, ref, delta, position) =>
-        handleSignatureChange(position, ref.offsetWidth, ref.offsetHeight)
+        handleSignatureChange(position, ref.offsetWidth, ref.offsetHeight,imgRef.current.width,
+          imgRef.current.height)
       }
-      minWidth={50}
-      minHeight={50}
-      maxWidth={200}
-      maxHeight={150}
     >
-      <img src={signatureData} alt="signature" style={imageStyle} draggable="false"/>
-      {/* <h3>Drag me</h3> */}
+      <div className="image__container" style={imageConatinerStyle}>
+      <img src={signatureData} alt="signature" style={imageStyle} draggable="false" ref={imgRef}/>
+      </div>
+      
     </Rnd>
   );
 };

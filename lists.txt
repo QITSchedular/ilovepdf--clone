@@ -101,3 +101,11 @@ So, in the embedImageIntoPdf function, change the y value in the drawImage funct
 
 y: height - newSigDimensions.position.y - newSigDimensions.height,
 This will adjust the y coordinate in the PDF document to match the y coordinate in the GUI interface.
+==============================  =============================================================================== =================================================================
+Meeting details: Date, time, location, and attendees.
+Agenda: List of topics or issues discussed during the meeting.
+Summary of discussions: A concise description of the points raised and the main discussion points for each agenda item.
+Decisions made: Key decisions taken during the meeting, along with any relevant context or rationale.
+Action items: Tasks or actions assigned to specific individuals, including deadlines and responsibilities.
+Follow-up actions: Any additional steps or follow-up actions identified during the meeting.
+Next meeting: Proposed date, time, and agenda for the next meeting, if applicable.

@@ -5,7 +5,7 @@ import SignatureDragger from "../ResizableDiv/SignatureDragger";
 import ExportPdf from "../ExportPage/ExportPdf";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SignatureCanvasModal from "../SignatureCanvasModal/SignatureCanvasModal";
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import base64ToArrayBuffer from "../../utils/helpers";
 
 PDFJS.GlobalWorkerOptions.workerSrc =
@@ -46,7 +46,7 @@ export default function PdfViewer() {
 
     for (let i = 1; i <= pdf.numPages; i++) {
       var page = await pdf.getPage(i);
-      var viewport = page.getViewport({ scale: 1 });
+      var viewport = page.getViewport({ scale: 2 });
       canvas.height = viewport.height;
       canvas.width = viewport.width;
       var render_context = {
@@ -66,7 +66,6 @@ export default function PdfViewer() {
     setShowSignatureModel(true);
   }
 
-
   // handle the signature data from the signature model
   const handleApplySignature = (data) => {
     setSignatureData(data);
@@ -76,75 +75,59 @@ export default function PdfViewer() {
   };
 
   const handleAppliedSignatureDimensions = async (dimensions) => {
-    const {height, position, width} = dimensions;
+    const { height, position, width } = dimensions;
     setSignatureDimenstions(dimensions);
     // call the embed image function here now
-
   };
 
   const embedImageIntoPdf = async (pdfDoc, imageFile, newSigDimensions) => {
-    console.log(newSigDimensions);
-    const imageBytes = await base64ToArrayBuffer(imageFile);
+    console.log(imageFile);
+    const response = await fetch(imageFile);
+    // const imageBytes = await base64ToArrayBuffer(imageFile);
+    const imageBytes = await response.arrayBuffer();
     // const imageBytes = await imageFile.arrayBuffer();
     const image = await pdfDoc.embedPng(imageBytes);
-    alert(newSigDimensions)
+    alert(newSigDimensions);
     const pages = pdfDoc.getPages();
-    //const firstPage = pages[0];
-    //const { width, height } = firstPage.getSize();
-    // firstPage.drawImage(image, {
-    //   x: newSigDimensions.position.x,
-    //   y: height - newSigDimensions.position.y - newSigDimensions.height,
-    //   width: newSigDimensions.width,
-    //   height: newSigDimensions.height,
-    // });
-    
-    // To render the signature on all the pages 
-    for(let i=0; i<pages.length; i++) {
+    const firstPage = pages[0];
+    const { width, height } = firstPage.getSize();
+    firstPage.drawImage(image, {
+      x: newSigDimensions.position.x,
+      y: height - newSigDimensions.position.y - newSigDimensions.height,
+      width: newSigDimensions.width,
+      height: newSigDimensions.height,
+    });
+
+    // To render the signature on all the pages
+    for (let i = 0; i < pages.length; i++) {
       const { width, height } = pages[i].getSize();
-      pages[i].drawImage(image,{
+      pages[i].drawImage(image, {
         x: newSigDimensions.position.x,
         y: height - newSigDimensions.position.y - newSigDimensions.height,
         width: newSigDimensions.width,
         height: newSigDimensions.height,
-      })
+      });
     }
-    // firstPage.drawImage(image, {
-    //   x: 0,
-    //   y: 0,
-    //   width: 50,
-    //   height: 50,
-    // });
-     // Calculate the new width and height of the image to fit within the PDF
-  // const imageWidth = Math.min(newSigDimensions.width, width);
-  // const imageHeight = Math.min(newSigDimensions.height, height);
 
-  // // Calculate the x and y position of the image within the PDF
-  // const x = Math.min(newSigDimensions.position.x, width - imageWidth);
-  // const y = Math.min(height - newSigDimensions.position.y - imageHeight, height - imageHeight);
-
-  // // Draw the image onto the PDF
-  // firstPage.drawImage(image, {
-  //   x,
-  //   y,
-  //   width: imageWidth,
-  //   height: imageHeight,
-  // });
     return pdfDoc;
   };
-  const handleSignPdf = async(e) => {
+  const handleSignPdf = async (e) => {
     e.preventDefault();
     try {
       const pdfDoc = await PDFDocument.load(await pdfFile.arrayBuffer());
-      const updatedPdfDoc = await embedImageIntoPdf(pdfDoc, signatureData,signatureDimenstions);
+      const updatedPdfDoc = await embedImageIntoPdf(
+        pdfDoc,
+        signatureData,
+        signatureDimenstions
+      );
       const pdfBytes = await updatedPdfDoc.save();
-        const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-        const url = URL.createObjectURL(pdfBlob);
-        window.location.href = url;
-
+      const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(pdfBlob);
+      window.location.href = url;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   useEffect(() => {
     if (pdf) {
       renderPage();
@@ -189,7 +172,9 @@ export default function PdfViewer() {
         />
 
         <div className="signatureModel">
-          {showSignatureModel && <SignatureCanvasModal onApplySignature={handleApplySignature} />}
+          {showSignatureModel && (
+            <SignatureCanvasModal onApplySignature={handleApplySignature} />
+          )}
         </div>
       </div>
 
@@ -197,20 +182,20 @@ export default function PdfViewer() {
         <div id="pdf-contents">
           <div id="image-convas-row">
             <div style={styles.wrapper} id="mysignature__dragger">
-              {/* {images.map((image, idx) => (
+              {images.map((image, idx) => (
                 <div key={idx} style={styles.imageWrapper}>
-                  {idx === 0 ? <SignatureDragger /> : null}
+                 
                   <img
                     src={image}
                     alt={`page-${idx}`}
-                    width={width}
-                    height={height}
+                    width={"800px"}
+                    height={"1130px"}
                   />
                 </div>
-              ))} */}
+              ))}
 
               {/* <SignatureDragger /> */}
-              {images.length > 0 && (
+              {/* {images.length > 0 && (
                 <div>
                   <img
                     src={images[0]}
@@ -220,20 +205,29 @@ export default function PdfViewer() {
                     id="testOne"
                     className="testOne"
                   />
-                  <SignatureDragger bounds={".testOne"} signatureData={signatureData} onChangeDimensions={handleAppliedSignatureDimensions}/>
+                  <SignatureDragger
+                    bounds={".testOne"}
+                    signatureData={signatureData}
+                    onChangeDimensions={handleAppliedSignatureDimensions}
+                  />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
       </div>
       {/* <ExportPdf id={"testOne"} customFileName={"somerandom"} width={width} height= {height}/> */}
-      {signPdf &&
+      {signPdf && (
         <div className="d-grid gap-2 col-6 mx-auto my-5">
-        <button className="btn btn-outline-success" type="button" onClick={handleSignPdf}>Sign Pdf</button>
-  </div>
-      }
-      
+          <button
+            className="btn btn-outline-success"
+            type="button"
+            onClick={handleSignPdf}
+          >
+            Sign Pdf
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ function SignaturePadCanvas() {
   const clear = () => sigCanvas.current.clear();
 
   const save = () =>
-    setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+    setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/jpeg"));
 
   return (
     <div className="my_sig_canvas">
@@ -16,6 +16,7 @@ function SignaturePadCanvas() {
         canvasProps={{
           className: "signatureCanvas"
         }}
+        throttle={18}
       />
       {/* Button to trigger save canvas image */}
       <button onClick={save}>Save</button>
